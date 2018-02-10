@@ -64,8 +64,10 @@ app.get('/api/persons/:id', (req, res) => {
 
 app.post('/api/persons', (req, res) => {
     const body = req.body
+    const name = body.name
+    const number = body.number
 
-    if (body.name === undefined || body.number === undefined) {
+    if (name === undefined || number === undefined || name.length === 0 || number.length === 0) {
         return res.status(400).json({
             error: `Name: ${body.name}, number: ${body.number}.
                      Name and number must both be defined`
