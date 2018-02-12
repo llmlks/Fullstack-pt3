@@ -10,7 +10,7 @@ app.use(cors())
 app.use(express.static('build'))
 app.set('json spaces', 4)
 
-morgan.token('body', (req, res) => JSON.stringify(req.body))
+morgan.token('body', req => JSON.stringify(req.body))
 
 app.use(morgan(':method :url :body :status :res[content-length] - :response-time ms'))
 
@@ -43,7 +43,7 @@ app.get('/api/persons/:id', (req, res) => {
                 res.json(Person.format(person))
             } else {
                 res.status(404).end()
-            }        
+            }
         })
         .catch(error => {
             console.log(error)
@@ -75,19 +75,17 @@ app.post('/api/persons', (req, res) => {
         })
         .catch(error => {
             console.log(error)
-            res.status(400).send({ error: 'name must be unique '})
+            res.status(400).send({ error: 'name must be unique ' })
         })
 })
 
 app.delete('/api/persons/:id', (req, res) => {
     Person
         .findByIdAndRemove(req.params.id)
-        .then(result => {
-            res.status(204).end()
-        })
+        .then(res.status(204).end())
         .catch(error => {
             console.log(error)
-            res.status(400).send({ error: 'malformatted id '})
+            res.status(400).send({ error: 'malformatted id ' })
         })
 })
 
@@ -106,7 +104,7 @@ app.put('/api/persons/:id', (req, res) => {
         })
         .catch(error => {
             console.log(error)
-            res.status(400).send({error: 'malformatted id'})
+            res.status(400).send({ error: 'malformatted id' })
         })
 })
 
